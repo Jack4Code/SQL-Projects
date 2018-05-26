@@ -1,0 +1,1 @@
+This script is a great way to create multiple test databases (as many as you want) that include tables with fake data.

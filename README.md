@@ -1,0 +1,1 @@
+A collection of cool SQL projects of mine.  Some of them are useful, and some of them are for entertainment.
