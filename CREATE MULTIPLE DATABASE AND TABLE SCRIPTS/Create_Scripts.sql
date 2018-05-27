@@ -1,12 +1,12 @@
---This script can be used to quickly create a number of databases and tables.
+--This script can be used to quickly create any number of databases and tables.
 --You can decide how many databases you want, what the databases will be called, etc...
 --I've included a fake data generator which populates as much fake data as you want.
 
-DECLARE @databaseName varchar(20) = 'tempDatabase';
-DECLARE @database int = 1;
-DECLARE @dbQTY int = 10;
-DECLARE @createOrDrop varchar(6) = 'create'
-
+DECLARE @databaseName varchar(20) = 'testDatabase'; --decide the database prefix name
+DECLARE @database int = 1; --first one
+DECLARE @dbQTY int = 30; --decide how many you want
+DECLARE @createOrDrop varchar(6) = 'create' -- 'create' them or 'drop' them.
+PRINT(UPPER(@createOrDrop) + ' script is being run.')
 if(UPPER(@createOrDrop) = 'CREATE')
 BEGIN
 	WHILE(@database <= @dbQTY)
@@ -27,7 +27,7 @@ BEGIN
 		SET @database = @database + 1
 	END
 END
-
+PRINT(UPPER(@createOrDrop) + ' script has run.')
 --NOW DEPLOY TABLES ACROSS HOWEVER MANY DATABASES THERE ARE
 
 
