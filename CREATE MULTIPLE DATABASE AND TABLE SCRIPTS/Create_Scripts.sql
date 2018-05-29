@@ -4,7 +4,7 @@
 
 DECLARE @databaseName varchar(20) = 'testDatabase'; --decide the database prefix name
 DECLARE @database int = 1; --first one
-DECLARE @dbQTY int = 30; --decide how many you want
+DECLARE @dbQTY int = 5; --decide how many you want
 DECLARE @createOrDrop varchar(6) = 'create' -- 'create' them or 'drop' them.
 PRINT(UPPER(@createOrDrop) + ' script is being run.')
 if(UPPER(@createOrDrop) = 'CREATE')
@@ -28,7 +28,32 @@ BEGIN
 	END
 END
 PRINT(UPPER(@createOrDrop) + ' script has run.')
+if(UPPER(@createOrDrop) = 'CREATE')
+BEGIN
+	PRINT(CAST(@dbQTY as varchar(4)) + ' databases were created.')
+END
+ELSE
+BEGIN
+	PRINT(CAST(@dbQTY as varchar(4)) + ' databases were droped.')
+END
 --NOW DEPLOY TABLES ACROSS HOWEVER MANY DATABASES THERE ARE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
