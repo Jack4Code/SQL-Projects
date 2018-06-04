@@ -4,8 +4,8 @@
 
 DECLARE @databaseName varchar(20) = 'testDatabase'; --decide the database prefix name
 DECLARE @database int = 1; --first one
-DECLARE @dbQTY int = 9; --decide how many you want
-DECLARE @createOrDrop varchar(6) = 'drop' -- 'create' them or 'drop' them.
+DECLARE @dbQTY int = 5; --decide how many you want
+DECLARE @createOrDrop varchar(6) = 'create' -- 'create' them or 'drop' them.
 PRINT(UPPER(@createOrDrop) + ' script is being run.')
 if(UPPER(@createOrDrop) = 'CREATE')
 BEGIN
@@ -38,22 +38,38 @@ BEGIN
 END
 
 --NOW DEPLOY TABLES ACROSS HOWEVER MANY DATABASES THERE ARE
---IF(UPPER(@createOrDrop) = 'CREATE')
---DECLARE @databaseNameWithPercent varchar(20) = @databaseName + '%'
---BEGIN
---	exec sp_msforeachdb 
---	'USE [?];
---	IF db_name() like ' + @databaseNameWithPercent + ' begin 
---    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name=''AccountHolder'' AND xtype=''U'')
---	BEGIN
---	Print(''Creating AccountHolder in database '' + db_name())
---	CREATE table dbo.AccountHolder (Id int IDENTITY(1,1) NOT NULL,
---	[Date] datetime Not Null,
---	TransDetail nvarchar(max) not null,
---	credit bit not null,
---	Balance money not null,
---	Primary Key (Id)) END END'
---END
+IF(UPPER(@createOrDrop) = 'CREATE')
+DECLARE @databaseNameWithPercent varchar(20) = @databaseName + '%'
+BEGIN
+	exec sp_msforeachdb 
+	'USE [?];
+	IF db_name() like ''testDatabase%'' begin 
+    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name=''AccountHolder'' AND xtype=''U'')
+	BEGIN
+	Print(''Creating AccountHolder in database '' + db_name())
+	CREATE table dbo.AccountHolder (Id int IDENTITY(1,1) NOT NULL,
+	[Date] datetime Not Null,
+	TransDetail nvarchar(max) not null,
+	credit bit not null,
+	Balance money not null,
+	Primary Key (Id)) END 
+	
+	DECLARE @Mean FLOAT; --the mean (and median if normally distributed)
+	DECLARE @StandardDeviation FLOAT; --(the Standard deviation you want)
+	DECLARE @cnt INT; --counter
+	DECLARE @TotalWanted INT; --counter
+	SELECT @Mean = 2000, @StandardDeviation = 100, @cnt = 1, @TotalWanted = 10000000;
+	/* now we generate the numbers we want, with the mean and standard deviation we want */
+	WHILE @cnt <= @TotalWanted
+	  BEGIN
+	  INSERT INTO AccountHolder
+		(Date, TransDetail, credit, Balance)
+		SELECT getDate(), ''transaction'', 1, ((RAND() * 2 - 1) + (RAND() * 2 - 1) + (RAND() * 2 - 1))
+			   * @StandardDeviation + @Mean;
+	  SELECT @cnt = @cnt + 1;
+	END;
+	END'
+END
 
 
 
